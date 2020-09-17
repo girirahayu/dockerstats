@@ -38,7 +38,7 @@ for n in range(0, len(stack)):
         dj = Convert(data)
 
         row = [["Stack:",stack[n]],["No","BlockIO","CPUPerc","Container","ID","MemPerc","MemUsage","Name","NetIO","TotalFileSize"]]
-        volrow = [["volume:"],["No","ContainerName","Type","Source","Destination","VolumeSize"]]
+        volrow = [[],["volume:"],["#","ContainerName","Type","Source","Destination","VolumeSize"]]
        
         for x in range(0, len(dj)):
             parsed_json = (json.loads(dj[x]))
@@ -57,7 +57,7 @@ for n in range(0, len(stack)):
                 #print(volumeJson[v]["Source"])
                 cmd = "du -sh " + volumeJson[v]["Source"] + """ | awk '{print $1}'"""
                 volsize = command(cmd)
-                vol_list = [v,parsed_json['Name'],volumeJson[v]["Type"],volumeJson[v]["Source"],volumeJson[v]["Destination"],volsize]
+                vol_list = [" ",parsed_json['Name'],volumeJson[v]["Type"],volumeJson[v]["Source"],volumeJson[v]["Destination"],volsize]
                 volrow.append(vol_list)
             
 
