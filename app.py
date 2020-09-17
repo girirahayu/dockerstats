@@ -6,8 +6,19 @@ import json
 import csv
 import sys
 import datetime
+import os
+import socket
 
 d = datetime.datetime.today()
+hostname = socket.gethostname()
+ip_address = socket.gethostbyname(hostname)
+
+if not os.path.exists(os.path.dirname(ip_address)):
+    try:
+        os.makedirs(os.path.dirname(filename))
+    except OSError as exc: # Guard against race condition
+        if exc.errno != errno.EEXIST:
+            raise
 
 def command(string):
     proc = subprocess.Popen([string], stdout=subprocess.PIPE, shell=True)
@@ -61,9 +72,17 @@ for n in range(0, len(stack)):
                 volrow.append(vol_list)
             
 
-        with open(stack[n]+'-'+d.strftime("%d-%b-%Y")+'.csv', 'w', newline='') as file:
+        with open(ip_address+'/'+stack[n]+'-'+d.strftime("%d-%b-%Y")+'.csv', 'w', newline='') as file:
             writer = csv.writer(file, quoting=csv.QUOTE_NONNUMERIC, delimiter=';')
             writer.writerows(row)
-        with open(stack[n]+'-'+d.strftime("%d-%b-%Y")+'.csv', 'a+', newline='') as file:
+        with open(ip_address+'/'+stack[n]+'-'+d.strftime("%d-%b-%Y")+'.csv', 'a+', newline='') as file:
             writer = csv.writer(file, quoting=csv.QUOTE_NONNUMERIC, delimiter=';')
             writer.writerows(volrow)
+
+#compress
+compress = "tar czvf "+ip_address+".tar.gz "+ip_address+"/"
+command(compress)
+
+#upload to s3
+upload = "s3cmd put "+ip_address+".tar.gz s3://devops/resource/ --no-check-certificate --acl-public"
+command(upload)
