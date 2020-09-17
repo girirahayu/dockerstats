@@ -13,12 +13,8 @@ d = datetime.datetime.today()
 hostname = socket.gethostname()
 ip_address = socket.gethostbyname(hostname)
 
-if not os.path.exists(os.path.dirname(ip_address)):
-    try:
-        os.makedirs(os.path.dirname(filename))
-    except OSError as exc: # Guard against race condition
-        if exc.errno != errno.EEXIST:
-            raise
+if os.path.isdir(ip_address) is False:
+    os.makedirs(ip_address, 0o777, True)
 
 def command(string):
     proc = subprocess.Popen([string], stdout=subprocess.PIPE, shell=True)
@@ -78,6 +74,10 @@ for n in range(0, len(stack)):
         with open(ip_address+'/'+stack[n]+'-'+d.strftime("%d-%b-%Y")+'.csv', 'a+', newline='') as file:
             writer = csv.writer(file, quoting=csv.QUOTE_NONNUMERIC, delimiter=';')
             writer.writerows(volrow)
+
+#copy config
+copyconf = "cp config.json "+ip_address+"/"
+command(copyconf)
 
 #compress
 compress = "tar czvf "+ip_address+".tar.gz "+ip_address+"/"
