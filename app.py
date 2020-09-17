@@ -18,10 +18,10 @@ def Convert(string):
     li = list(string.split(", ")) 
     return li 
 
-data = command('./container.sh').strip(",")
+data = command('./container.sh '+sys.argv[1]).strip(",")
 dj = Convert(data)
 
-row = [["Stack:",sys.argv[1]],["No","BlockIO","CPUPerc","Container","ID","MemPerc","MemUsage","Name","NetIO","DiskUsage"]]
+row = [["Stack:",sys.argv[1]],["No","BlockIO","CPUPerc","Container","ID","MemPerc","MemUsage","Name","NetIO","DiskUsage","PersistDiskLocation"]]
 for x in range(0, len(dj)):
     parsed_json = (json.loads(dj[x]))
     getSize = command('./size.sh '+ parsed_json['ID'])
