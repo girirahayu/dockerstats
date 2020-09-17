@@ -1,0 +1,8 @@
+*.DS_Store
+*.pyc
+pyenv
+__pycache__
+.idea
+*.csv
+test.py
+
