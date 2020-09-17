@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker ps -a --format "{\"Size\":\"{{.Size}}\",\"ID\":\"{{.ID}}\"}" | grep $1
+docker ps -a --filter "id=$1" --format "{\"Size\":\"{{.Size}}\"}"
