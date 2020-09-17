@@ -33,19 +33,21 @@ stack = read_config('stack_name',None)
 for n in range(0, len(stack)):
 
     data = command('./container.sh '+stack[n]).strip(",")
-    dj = Convert(data)
+    
+    if data != "":
+        dj = Convert(data)
 
-    row = [["Stack:",stack[n]],["No","BlockIO","CPUPerc","Container","ID","MemPerc","MemUsage","Name","NetIO","TotalFileSize"]]
-    for x in range(0, len(dj)):
-        parsed_json = (json.loads(dj[x]))
-        
-        getSize = command('./size.sh '+ parsed_json['ID'])
-        sizeJson = json.loads([getSize][0])
-        #print(sizeList['Size'])
-        
-        row_list = [x, parsed_json['BlockIO'], parsed_json['CPUPerc'], parsed_json['Container'], parsed_json['ID'],parsed_json['MemPerc'],parsed_json['MemUsage'],parsed_json['Name'],parsed_json['NetIO'],sizeJson['Size']]    
-        row.append(row_list)
+        row = [["Stack:",stack[n]],["No","BlockIO","CPUPerc","Container","ID","MemPerc","MemUsage","Name","NetIO","TotalFileSize"]]
+        for x in range(0, len(dj)):
+            parsed_json = (json.loads(dj[x]))
+            
+            getSize = command('./size.sh '+ parsed_json['ID'])
+            sizeJson = json.loads([getSize][0])
+            #print(sizeList['Size'])
+            
+            row_list = [x, parsed_json['BlockIO'], parsed_json['CPUPerc'], parsed_json['Container'], parsed_json['ID'],parsed_json['MemPerc'],parsed_json['MemUsage'],parsed_json['Name'],parsed_json['NetIO'],sizeJson['Size']]    
+            row.append(row_list)
 
-    with open(stack[n]+'-'+d.strftime("%d-%b-%Y")+'.csv', 'w', newline='') as file:
-        writer = csv.writer(file, quoting=csv.QUOTE_NONNUMERIC, delimiter=';')
-        writer.writerows(row)
+        with open(stack[n]+'-'+d.strftime("%d-%b-%Y")+'.csv', 'w', newline='') as file:
+            writer = csv.writer(file, quoting=csv.QUOTE_NONNUMERIC, delimiter=';')
+            writer.writerows(row)
