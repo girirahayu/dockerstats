@@ -1,6 +1,8 @@
 {
     "stack_name":[
-        "mariadb",
-        "nginx"
+        "healthcheck",
+        "ipsec",
+        "network-services",
+        "scheduler"
     ]
 }
