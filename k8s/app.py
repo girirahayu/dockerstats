@@ -45,7 +45,7 @@ for n in range(0, len(strNamespace)):
 
             #filter = """ '{{ json .}}' """
             #cmd = "docker stats --no-stream --format "+filter+" | grep "+getPods[p]
-            data = command('./container.sh '+getPods[p])
+            data = command('../container.sh '+getPods[p])
             data = data.strip(",")
             
             if data != "":
