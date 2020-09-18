@@ -43,9 +43,10 @@ for n in range(0, len(strNamespace)):
         for p in range(0, len(getPods)):
             # print(getPods[p])
 
-            filter = """ '{{ json .}}' """
-            cmd = "docker stats --no-stream --format "+filter+" | grep "+getPods[p]
-            data = command(cmd)
+            #filter = """ '{{ json .}}' """
+            #cmd = "docker stats --no-stream --format "+filter+" | grep "+getPods[p]
+            data = command('./container.sh '+getPods[p])
+            data = data.strip(",")
             
             if data != "":
                 dj = Convert(data)
