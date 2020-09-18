@@ -43,7 +43,7 @@ for n in range(0, len(strNamespace)):
         for p in range(0, len(getPods)):
             # print(getPods[p])
 
-            data = command('../container.sh '+stack[n]).strip(",")
+            data = command('../container.sh '+getPods[p]
             if data != "":
                 dj = Convert(data)
                 
